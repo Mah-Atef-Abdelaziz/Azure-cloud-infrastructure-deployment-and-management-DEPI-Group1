@@ -1,0 +1,92 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_Windows10_InfrastructureHost_name": {
+            "defaultValue": "Windows10-InfrastructureHost",
+            "type": "String"
+        },
+        "disks_Windows10_InfrastructureHost_OsDisk_1_dc81d11522744e278a8bc343d4756dbe_externalid": {
+            "defaultValue": "/subscriptions/b077ec8d-f214-4b50-983d-7fe640d6e457/resourceGroups/RG-CLOUDGRADUATIONPROJECT/providers/Microsoft.Compute/disks/Windows10-InfrastructureHost_OsDisk_1_dc81d11522744e278a8bc343d4756dbe",
+            "type": "String"
+        },
+        "networkInterfaces_windows10_infrastructurehost670_z2_externalid": {
+            "defaultValue": "/subscriptions/b077ec8d-f214-4b50-983d-7fe640d6e457/resourceGroups/RG-CloudGraduationProject/providers/Microsoft.Network/networkInterfaces/windows10-infrastructurehost670_z2",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2024-11-01",
+            "name": "[parameters('virtualMachines_Windows10_InfrastructureHost_name')]",
+            "location": "westeurope",
+            "zones": [
+                "2"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "additionalCapabilities": {
+                    "hibernationEnabled": false
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsDesktop",
+                        "offer": "Windows-10",
+                        "sku": "win10-22h2-pro-g2",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('virtualMachines_Windows10_InfrastructureHost_name'), '_OsDisk_1_dc81d11522744e278a8bc343d4756dbe')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_Windows10_InfrastructureHost_OsDisk_1_dc81d11522744e278a8bc343d4756dbe_externalid')]"
+                        },
+                        "deleteOption": "Delete",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": [],
+                    "diskControllerType": "SCSI"
+                },
+                "osProfile": {
+                    "computerName": "Windows10-Infra",
+                    "adminUsername": "Windows10-Host",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true,
+                        "patchSettings": {
+                            "patchMode": "AutomaticByOS",
+                            "assessmentMode": "ImageDefault",
+                            "enableHotpatching": false
+                        }
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_windows10_infrastructurehost670_z2_externalid')]",
+                            "properties": {
+                                "deleteOption": "Delete"
+                            }
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                },
+                "licenseType": "Windows_Client"
+            }
+        }
+    ]
+}

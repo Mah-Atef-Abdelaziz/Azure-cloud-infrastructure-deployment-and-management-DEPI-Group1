@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_Windows10_InfrastructureHost_name": {
+            "value": null
+        },
+        "disks_Windows10_InfrastructureHost_OsDisk_1_dc81d11522744e278a8bc343d4756dbe_externalid": {
+            "value": null
+        },
+        "networkInterfaces_windows10_infrastructurehost670_z2_externalid": {
+            "value": null
+        }
+    }
+}
